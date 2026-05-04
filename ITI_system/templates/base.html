@@ -1,0 +1,16 @@
+ <!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>ITian System</title>
+</head>
+<body>
+    <h1>ITian System</h1>
+    <nav>
+        <a href="{% url 'trainee:trainee_list' %}">Trainees</a> |
+        <a href="{% url 'course:course_list' %}">Courses</a>
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+</html>
