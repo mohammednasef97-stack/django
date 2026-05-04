@@ -3,14 +3,14 @@
 {% block content %}
 <h2>Courses List</h2>
 
-<a href="{% url 'add_course' %}">Add Course</a>
+<a href="{% url 'course:add_course' %}">Add Course</a>
 
 <ul>
   {% for c in courses %}
     <li>
       {{ c.name }}
-      <a href="{% url 'update_course' c.id %}">Edit</a>
-      <a href="{% url 'delete_course' c.id %}">Delete</a>
+      <a href="{% url 'course:update_course' c.id %}">Edit</a>
+      <a href="{% url 'course:delete_course' c.id %}">Delete</a>
     </li>
   {% endfor %}
 </ul>
