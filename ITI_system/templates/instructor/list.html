@@ -1,0 +1,38 @@
+ {% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Instructor List</h2>
+
+<a href="/instructor/add/"> Add New Instructor</a>
+
+<br><br>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Salary</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for i in instructors %}
+    <tr>
+        <td>{{ i.id }}</td>
+        <td>{{ i.name }}</td>
+        <td>{{ i.age }}</td>
+        <td>{{ i.salary }}</td>
+        <td>
+            <a href="/instructor/delete/{{ i.id }}/">Delete</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">No Instructors Found</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

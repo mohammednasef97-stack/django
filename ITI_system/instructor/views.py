@@ -2,8 +2,9 @@
 from django.shortcuts import render, redirect
 from .models import Instructor
 from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponse
 
-
+ 
 def instructorList(request):
 
     instructors = Instructor.objects.all()
@@ -11,12 +12,12 @@ def instructorList(request):
     context = {
         'instructors': instructors
     }
-
     return render(
         request,
         'instructor/list.html',
-        context
-    )
+        context)
+
+    
 
 
 def addInstructor(request):

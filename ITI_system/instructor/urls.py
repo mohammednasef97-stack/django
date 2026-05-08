@@ -4,12 +4,12 @@ from . import views
 urlpatterns = [
 
     path(
-        'list',
+        'list/',
         views.instructorList
     ),
 
     path(
-        'add',
+        'add/',
         views.addInstructor
     ),
 
