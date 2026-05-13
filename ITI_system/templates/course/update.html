@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Update Course</h2>
 
-<form method="POST">
-  {% csrf_token %}
+<div class="content-card col-md-6 mx-auto">
 
-  <label>Name:</label>
-  <input type="text" name="name" value="{{ course.name }}" required>
+    <h2 class="mb-2">{{ page_title|default:"Update Course" }}</h2>
+    <p class="text-muted">{{ page_subtitle|default:"Edit course details." }}</p>
 
-  <br><br>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-  <button type="submit">Update</button>
-</form>
+        {{ form.as_p }}
+
+        <button class="btn btn-main w-100">
+            Update Course
+        </button>
+    </form>
+
+</div>
 
 {% endblock %}

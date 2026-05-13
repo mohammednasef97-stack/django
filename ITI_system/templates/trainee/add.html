@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content-card col-md-6 mx-auto">
+
+    <h2 class="mb-2">{{ page_title|default:"Add Trainee" }}</h2>
+    <p class="text-muted">{{ page_subtitle|default:"Create a trainee profile." }}</p>
+    {% if pattern_label %}
+    <div class="alert alert-info py-2">
+        <strong>{{ pattern_label }}</strong><br>
+        <small>{{ pattern_detail }}</small>
+    </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button class="btn btn-main w-100">
+            Save Trainee
+        </button>
+    </form>
+
+</div>
+
+{% endblock %}

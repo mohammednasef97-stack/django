@@ -1,13 +1,66 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Trainees List</h2>
-<a href="{% url 'trainee:add_trainee' %}">Add Trainee</a>
-<ul>
-  {% for t in trainees %}
-    <li>{{ t.name }} - {{ t.email }} 
-      <a href="{% url 'trainee:update_trainee' t.id %}">Update</a>
-      <a href="{% url 'trainee:delete_trainee' t.id %}">Delete</a>
-    </li>
-  {% endfor %}
-</ul>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Trainees</h2>
+
+    {% if can_manage_trainees %}
+    <div class="dropdown">
+        <button class="btn btn-main dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            + Add Trainee
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{% url 'trainee:add_trainee' %}">Function-Based Insert</a></li>
+            <li><a class="dropdown-item" href="{% url 'trainee:add_trainee_createview' %}">Generic View + ModelForm</a></li>
+            <li><a class="dropdown-item" href="{% url 'trainee:add_trainee_cbv_manual' %}">Class-Based Insert (manual)</a></li>
+        </ul>
+    </div>
+    {% endif %}
+</div>
+
+<div class="content-card">
+
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for trainee in trainees %}
+            <tr>
+                <td>{{ trainee.id }}</td>
+                <td>{{ trainee.name }}</td>
+                <td>{{ trainee.email }}</td>
+                <td>{{ trainee.age }}</td>
+                <td>
+                    <a href="{% url 'trainee:update_trainee' trainee.id %}" class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    {% if can_manage_trainees %}
+                    <form method="post" action="{% url 'trainee:delete_trainee' trainee.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" name="delete_mode" value="soft" class="btn btn-outline-danger btn-sm" onclick="return confirm('Soft delete this trainee?');">
+                            Soft Delete
+                        </button>
+                        <button type="submit" name="delete_mode" value="hard" class="btn btn-danger btn-sm" onclick="return confirm('Hard delete permanently?');">
+                            Hard Delete
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
 {% endblock %}

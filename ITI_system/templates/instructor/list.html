@@ -2,37 +2,50 @@
 
 {% block content %}
 
-<h2>Instructor List</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Instructors</h2>
 
-<a href="/instructor/add/"> Add New Instructor</a>
+    <a href="{% url 'instructor:add_instructor' %}" class="btn btn-main">
+        + Add Instructor
+    </a>
+</div>
 
-<br><br>
+<div class="content-card">
 
-<table border="1" cellpadding="10">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Salary</th>
-        <th>Actions</th>
-    </tr>
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
 
-    {% for i in instructors %}
-    <tr>
-        <td>{{ i.id }}</td>
-        <td>{{ i.name }}</td>
-        <td>{{ i.age }}</td>
-        <td>{{ i.salary }}</td>
-        <td>
-            <a href="/instructor/delete/{{ i.id }}/">Delete</a>
-        </td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="5">No Instructors Found</td>
-    </tr>
-    {% endfor %}
+        <tbody>
+            {% for instructor in instructors %}
+            <tr>
+                <td>{{ instructor.id }}</td>
+                <td>{{ instructor.name }}</td>
+                <td>
+                    <a href="{% url 'instructor:update_instructor' instructor.id %}" class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
 
-</table>
+                    <form method="post" action="{% url 'instructor:delete_instructor' instructor.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" name="delete_mode" value="soft" class="btn btn-outline-danger btn-sm" onclick="return confirm('Soft delete this instructor?');">
+                            Soft Delete
+                        </button>
+                        <button type="submit" name="delete_mode" value="hard" class="btn btn-danger btn-sm" onclick="return confirm('Hard delete permanently?');">
+                            Hard Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
 
 {% endblock %}

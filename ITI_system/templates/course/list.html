@@ -1,18 +1,65 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Courses List</h2>
 
-<a href="{% url 'course:add_course' %}">Add Course</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Courses</h2>
 
-<ul>
-  {% for c in courses %}
-    <li>
-      {{ c.name }}
-      <a href="{% url 'course:update_course' c.id %}">Edit</a>
-      <a href="{% url 'course:delete_course' c.id %}">Delete</a>
-    </li>
-  {% endfor %}
-</ul>
+    {% if can_manage_courses %}
+    <a href="{% url 'course:add_course' %}" class="btn btn-main">
+        + Add Course
+    </a>
+    {% endif %}
+</div>
+
+<div class="content-card">
+
+    {% if courses %}
+
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.id }}</td>
+                <td>{{ course.title }}</td>
+                <td>
+                    {% if can_manage_courses %}
+                    <a href="{% url 'course:update_course' course.id %}" class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <form method="post" action="{% url 'course:delete_course' course.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" name="delete_mode" value="soft" class="btn btn-outline-danger btn-sm" onclick="return confirm('Soft delete this course?');">
+                            Soft Delete
+                        </button>
+                        <button type="submit" name="delete_mode" value="hard" class="btn btn-danger btn-sm" onclick="return confirm('Hard delete permanently?');">
+                            Hard Delete
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+
+    <div class="text-center py-5">
+        <h5>No Courses Yet</h5>
+    </div>
+
+    {% endif %}
+
+</div>
 
 {% endblock %}

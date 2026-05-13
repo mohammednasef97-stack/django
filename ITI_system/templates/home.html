@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content-card">
+    <h2 class="mb-3">Home</h2>
+    {% if user.is_authenticated %}
+        <p class="text-muted mb-2">
+            Welcome {{ user.username }}.
+            Role:
+            <strong>
+                {% if is_portal_admin %}Admin{% elif is_portal_instructor %}Instructor{% elif is_portal_trainee %}Trainee{% else %}User{% endif %}
+            </strong>
+        </p>
+        <p class="text-muted mb-4">
+            Permission hierarchy is active: admin (all privileges), instructor (courses + trainees), trainee (limited/self access).
+        </p>
+        <div class="row g-2 mb-4">
+            <div class="col-md-4"><div class="border rounded p-2 bg-light">Can manage instructors: <strong>{{ can_manage_instructors|yesno:"Yes,No" }}</strong></div></div>
+            <div class="col-md-4"><div class="border rounded p-2 bg-light">Can manage courses: <strong>{{ can_manage_courses|yesno:"Yes,No" }}</strong></div></div>
+            <div class="col-md-4"><div class="border rounded p-2 bg-light">Can manage trainees: <strong>{{ can_manage_trainees|yesno:"Yes,No" }}</strong></div></div>
+        </div>
+    {% else %}
+        <p class="text-muted mb-4">Please log in to access your role permissions.</p>
+        <a class="btn btn-main" href="{% url 'login' %}">Login</a>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-main" href="{% url 'course:course_list' %}">Courses</a>
+            <a class="btn btn-main" href="{% url 'trainee:trainee_list' %}">Trainees</a>
+            {% if can_manage_instructors %}
+                <a class="btn btn-main" href="{% url 'instructor:instructor_list' %}">Instructors</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
