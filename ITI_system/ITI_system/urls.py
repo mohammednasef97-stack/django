@@ -20,6 +20,7 @@ urlpatterns = [
     path("course/", include("course.urls")),
     path("register/", acc_views.register, name="register"),
     path("instructor/", include("instructor.urls")),
+    path("api/", include("api.urls")),
     path(
         "login/",
         auth_views.LoginView.as_view(
